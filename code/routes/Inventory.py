@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter
 from DataModels.InventoryData import InventoryItem
 
@@ -25,3 +26,22 @@ async def delete_all():
         "status": "succsess",
         "amount deleted": deleted.deleted_count
         }
+
+@inv_app.put("/update_item_value")
+async def update_value(itemID : str, new_data : InventoryItem):
+    old_item = await InventoryItem.get(itemID)
+
+    if not old_item:
+        raise HTTPException(status_code=404, detail="No item found.")
+    
+    old_item.itemName = new_data.itemName
+    old_item.itemID = new_data.itemName
+    old_item.amount = new_data.amount
+    old_item.price = new_data.price
+
+    await old_item.save()
+
+    return{
+        "status" : "success",
+        "Item updated": old_item
+    }

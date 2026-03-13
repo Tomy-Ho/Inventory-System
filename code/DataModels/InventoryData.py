@@ -4,8 +4,8 @@ from beanie import Document
 class InventoryItem(Document):
     itemName: str
     itemID: int
-    amount: int
-    price: float
+    amount: int = Field(ge=0, default=0)
+    price: float = Field(ge=0, default=0)
 
     class Settings:
         name = "Items"

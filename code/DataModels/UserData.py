@@ -18,6 +18,7 @@ class User(Document):
                 raise ValueError("Password must include at least one number.")
             if not any (char.isalnum() for char in passwordtocheck):
                 raise ValueError("Password must include at least one special character.")
+            return passwordtocheck
 
     class Settings:
         name = "Users"

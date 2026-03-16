@@ -1,35 +1,34 @@
 from fastapi import FastAPI, HTTPException
 from fastapi import APIRouter
-from DataModels.UserData import User
+from DataModels.UserData import UserIn, UserOut
 
 user_app = APIRouter()
 
-@user_app.post("/")
-async def creat_User(user : User):
-    await User.insert(user)
-    print(user)
+@user_app.post("/", response_model=UserOut)
+async def creat_User(user : UserIn):
+    await UserIn.insert(user)
     return user
 
-@user_app.get("/get_one_user_info")
-async def get_One_User(userid : str, user : User):
-    result = await User.get(userid)
+@user_app.get("/get_user_by_name_and_age", response_model=list[UserOut])
+async def get_specific_User(username : str, userage : int):
+    result = await UserIn.find(UserIn.name == username and UserIn.age == userage).to_list()
     return result
 
-@user_app.get("/get_all_user_list")
+@user_app.get("/get_all_user_list", response_model=list[UserOut])
 async def get_All_Users():
-    return await User.find_all().to_list()
+    return await UserIn.find_all().to_list()
 
 @user_app.delete("/clear_user_list")
 async def delete_All_Users():
-    delete_result = await User.find_all().delete()
+    delete_result = await UserIn.find_all().delete()
     return {
         "status" : "success",
         "Users deleted" : delete_result.deleted_count
     }
 
 @user_app.put("/change_user_values")
-async def update_User_Data(userid : str, newUserData : User):
-    old_User = await User.get(userid)
+async def update_User_Data(userid : str, newUserData : UserOut):
+    old_User = await UserIn.get(userid)
 
     if not old_User:
         raise HTTPException(status_code=404, detail="No User found.")

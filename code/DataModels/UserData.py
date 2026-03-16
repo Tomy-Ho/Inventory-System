@@ -1,10 +1,15 @@
 from pydantic import Field, EmailStr, field_validator
 from beanie import Document
 
-class User(Document):
+class UserBase(Document):
     name: str
     age: int = Field(ge=0)
     email: EmailStr = Field(examples=['example123@mail.com'])
+
+    class Settings:
+        name = "Users"
+
+class UserIn(UserBase):
     password: str = Field(min_length=8)
 
     @field_validator('password')
@@ -20,5 +25,5 @@ class User(Document):
                 raise ValueError("Password must include at least one special character.")
             return passwordtocheck
 
-    class Settings:
-        name = "Users"
+class UserOut(UserBase):
+     pass

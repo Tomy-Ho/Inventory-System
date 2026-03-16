@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from routes.Inventory import inv_app
 from routes.UserRoute import user_app
-from DataBase import InitializeDB
+from DataBase.DataBase import InitializeDB
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

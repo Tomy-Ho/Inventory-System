@@ -1,4 +1,4 @@
-from pydantic import Field
+from pydantic import Field, BaseModel
 from beanie import Document
 
 class InventoryItemBase(Document):
@@ -12,3 +12,7 @@ class InventoryItemBase(Document):
 
 class InventoryItemOut(InventoryItemBase):
     pass
+
+class ItemResponseStatus(BaseModel):
+    status: str
+    detals: str

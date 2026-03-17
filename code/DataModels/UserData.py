@@ -1,4 +1,4 @@
-from pydantic import Field, EmailStr, field_validator
+from pydantic import Field, EmailStr, field_validator, BaseModel
 from beanie import Document
 
 class UserBase(Document):
@@ -27,3 +27,7 @@ class UserIn(UserBase):
 
 class UserOut(UserBase):
      pass
+
+class UserResponseStatus(BaseModel):
+    status: str
+    details: str

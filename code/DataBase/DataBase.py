@@ -4,5 +4,5 @@ from DataModels.InventoryData import InventoryItemBase
 from DataModels.UserData import UserIn
 
 async def InitializeDB():
-    clientConnection = AsyncIOMotorClient("mongodb://localhost:27017/test")
+    clientConnection = AsyncIOMotorClient("mongodb://localhost:27017")
     await init_beanie(database=clientConnection.inventoryDB, document_models=[InventoryItemBase, UserIn])

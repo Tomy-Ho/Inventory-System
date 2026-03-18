@@ -1,17 +1,17 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi import APIRouter
 from DataModels.UserData import UserIn, UserOut, UserResponseStatus
-from typing import Union
+from typing import Annotated
 
 user_app = APIRouter(prefix="/User", tags=["User"])
 
-@user_app.post("/", response_model=UserOut, status_code=201)
-async def creat_User(user : UserIn):
+@user_app.post("/create_user", response_model=UserOut, status_code=201)
+async def create_User(user : Annotated[UserIn, Query()]):
     await UserIn.insert(user)
     return user
 
 @user_app.get("/get_user_by_name_and_age", response_model=list[UserOut])
-async def get_specific_User(username : str, userage : int):
+async def get_specific_User(username : str | None = None, userage : int | None = None):
     result = await UserIn.find(UserIn.name == username and UserIn.age == userage).to_list()
     
     if not result:
@@ -39,8 +39,8 @@ async def delete_user(userid : str):
     return UserResponseStatus(status="success", details="User deleted = %s" %userid)
 
 @user_app.put("/change_user_values", response_model=UserResponseStatus)
-async def update_User_Data(userid : str, newUserData : UserOut):
-    old_User = await UserIn.get(userid)
+async def update_User_Data(newUserData : Annotated[UserIn, Query()]):
+    old_User = await UserIn.get(newUserData.id)
 
     if not old_User:
         raise HTTPException(status_code=404, detail="No User found.")

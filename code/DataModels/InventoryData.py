@@ -3,8 +3,8 @@ from beanie import Document
 
 class InventoryItemBase(Document):
     itemName: str
-    itemID: int
-    amount: int = Field(ge=0, default=0)
+    itemID: int = Field(ge=0)
+    quantity: int = Field(ge=0, default=0)
     price: float = Field(ge=0, default=0)
 
     class Settings:

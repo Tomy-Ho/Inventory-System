@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -18,6 +18,10 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(inv_app)
 app.include_router(user_app)
 
-@app.get("/", tags=["Main"])
-async def root():
-    return {"message" : "welcome"}
+app.mount("/static", StaticFiles(directory="static"), name="static")
+template =Jinja2Templates(directory="Templates") 
+
+@app.get("/", response_class=HTMLResponse)
+async def root(request : Request):
+    return template.TemplateResponse("home.html", 
+                                     {"request": request, "message": "Hello!"})

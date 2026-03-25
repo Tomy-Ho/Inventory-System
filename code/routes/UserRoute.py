@@ -1,12 +1,12 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Form
 from fastapi import APIRouter
 from DataModels.UserData import UserIn, UserOut, UserResponseStatus
 from typing import Annotated
 
 user_app = APIRouter(prefix="/User", tags=["User"])
 
-@user_app.post("/create_user", response_model=UserOut, status_code=201)
-async def create_User(user : Annotated[UserIn, Query()]):
+@user_app.post("/creat_user", response_model=UserOut, status_code=201)
+async def create_User(user : Annotated[UserIn, Form()]):
     await UserIn.insert(user)
     return user
 

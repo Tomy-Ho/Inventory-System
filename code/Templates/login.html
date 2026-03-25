@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{url_for('static', path='/style.css')}}">
+    <body>
+        <form action="/User/creat_user" method="post" class="login_container">
+            <h1>{{message}}</h1>
+            <div class="login_single">
+                Name: <input type="text" name="name" required><br><br>
+            </div>
+            <div class="login_single">
+                Age: <input type="number" name="age" required><br><br>
+            </div>
+            <div class="login_single">
+                Email: <input type="email" name="email" required><br><br>
+            </div>
+            <div class="login_single">
+                Password: <input type="password" name="password" required><br><br>
+            </div>
+            <div>
+                <button type="submit">Sign In</button>
+                <button type="reset">Reset all</button>
+            </div>
+        </form>
+    </body>
+</html>

@@ -25,3 +25,7 @@ template =Jinja2Templates(directory="Templates")
 async def root(request : Request):
     return template.TemplateResponse("home.html", 
                                      {"request": request, "message": "Hello!"})
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_home(request : Request):
+    return template.TemplateResponse("login.html", {"request": request, "message": "Sign in"})
